@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="app_name">Eureka</string>
+
+  <string name="demo_title_custom_tab_icon_and_text">Custom Tab Icon and Text</string>
+  <string name="demo_title_custom_tab_icon_and_notification_mark">Custom Tab Icon and Notification Mark</string>
+
+  <string name="home">Home</string>
+  <string name="room">Rooms</string>
+  <string name="setting">Settings</string>
+
+  <string name="app_title">택시를 부탁해!</string>
+  <string name="room_detail_name">택시방 상세정보</string>
+</resources>
