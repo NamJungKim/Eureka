@@ -3,6 +3,9 @@ package kr.ac.kpu.Eureka;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -44,7 +47,13 @@ public class TabWithNotificationMarkActivity extends AppCompatActivity implement
 
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     toolbar.setTitle(tabbar.titleResId);
+    toolbar.setTitleTextColor(Color.BLACK);
+
+    final Drawable upArrow = getResources().getDrawable(R.drawable.back);
+    upArrow.setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
+
     setSupportActionBar(toolbar);
+    getSupportActionBar().setHomeAsUpIndicator(upArrow);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
@@ -119,7 +128,7 @@ public class TabWithNotificationMarkActivity extends AppCompatActivity implement
         title.setText(res.getText(R.string.room));
         break;
       case 2:
-        icon.setImageDrawable(res.getDrawable(R.drawable.ic_person_white_24dp));
+        icon.setImageDrawable(res.getDrawable(R.drawable.setting));
         title.setText(res.getText(R.string.setting));
         break;
       default:
