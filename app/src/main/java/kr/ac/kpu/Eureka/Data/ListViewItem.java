@@ -1,4 +1,4 @@
-package kr.ac.kpu.Eureka;
+package kr.ac.kpu.Eureka.Data;
 
 import android.graphics.drawable.Drawable;
 
@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
  */
 
 public class ListViewItem {
+    public String _id;
     private Drawable iconDrawable ;
     private String titleStr ;
     private String descStr ;

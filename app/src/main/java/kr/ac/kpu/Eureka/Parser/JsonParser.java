@@ -1,4 +1,4 @@
-package kr.ac.kpu.Eureka;
+package kr.ac.kpu.Eureka.Parser;
 
 import android.content.Context;
 import android.util.Log;
@@ -17,6 +17,13 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import kr.ac.kpu.Eureka.Data.Global;
+import kr.ac.kpu.Eureka.Data.MyGroup;
+import kr.ac.kpu.Eureka.Data.MyInfo;
+import kr.ac.kpu.Eureka.HomeFragment;
+import kr.ac.kpu.Eureka.Main.MainActivity;
+import kr.ac.kpu.Eureka.Main.SignupActivity;
 
 /**
  * Created by han on 2017-05-29.
@@ -93,14 +100,21 @@ public class JsonParser { // 싱글톤 패턴 적용
     }
 
     public StringRequest CreateGroup (final String departure, final String destination, // 회원 정보 DB에 저장 , 회원가입
-                                     final String name, final String maxCount) { // 회원 리스트 DB에 저장
+                                      final String name, final String maxCount, final String date) { // 회원 리스트 DB에 저장
         String url = gro_URL;
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         // response
-                        Log.d("Response", response);
+                        try {
+                            JSONObject getid = new JSONObject(response);
+                            getid = getid.getJSONObject("data");
+                            String _id = getid.getString("_id");
+                            JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().PutUser(Global.myinfo.get_userid(), _id), 1); // 계정 DB에도 그룹리스트 추가
+                            Log.d("Response", response);
+                        }catch (Exception e){e.printStackTrace();}
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -114,6 +128,7 @@ public class JsonParser { // 싱글톤 패턴 적용
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("date", date);
                 params.put("departure", departure);
                 params.put("destination", destination);
                 params.put("name",name);
@@ -132,6 +147,7 @@ public class JsonParser { // 싱글톤 패턴 적용
                     @Override
                     public void onResponse(String response) {
                         // response
+                        HomeFragment.handler.sendEmptyMessage(0); // 프레그먼트 갱신
                         Log.d("Response", response);
                     }
                 },
@@ -254,6 +270,22 @@ public class JsonParser { // 싱글톤 패턴 적용
                                 String name = data1.getString("name");
                                 String email = data1.getString("email");
                                 JSONArray group = data1.getJSONArray("group");
+                                Global.myinfo.set_id(_id);
+                                Global.myinfo.set_userid(userid);
+                                Global.myinfo.set_email(phoneNumber);
+                                Global.myinfo.set_name(name);
+                                Global.myinfo.set_phone(email);
+                                for (int i =0 ; i<group.length();i++) {
+                                    String a = group.getJSONObject(i).getString("_id");
+                                    String b = group.getJSONObject(i).getString("departure");
+                                    String c =  group.getJSONObject(i).getString("destination");
+                                    String d = group.getJSONObject(i).getString("name");
+                                    String e = group.getJSONObject(i).getString("date");
+                                    String f = group.getJSONObject(i).getString("maxCount");
+                                    JSONArray g = group.getJSONObject(i).getJSONArray("member");
+                                    MyGroup group_temp = new MyGroup(a,b,c,d,e,f,String.valueOf(g.length()));
+                                    Global.myinfo.groups.add(group_temp);
+                                }
                                 Log.i("한로그", _id +"님이 접속하였습니다.");
                                 MainActivity.handler.sendEmptyMessage(0);
                             } catch (Exception e) {
@@ -272,7 +304,42 @@ public class JsonParser { // 싱글톤 패턴 적용
         queue.add(jsonObjectRequest);
         return jsonObjectRequest;
     }
-
+    public JsonObjectRequest GetGroupUsers(final String Userid) {
+        final String url = gro_URL;
+        String Param = "?id="+Userid;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url+Param, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject GroupList = response.getJSONObject("data");
+                            String a = GroupList.getString("_id");
+                            String b = GroupList.getString("departure");
+                            String c = GroupList.getString("destination");
+                            String d = GroupList.getString("name");
+                            JSONArray group = GroupList.getJSONArray("member");
+                            for(int i=0;i<group.length();i++){
+                                JSONObject datas = group.getJSONObject(i);
+                                String _id = datas.getString("_id");
+                                String userid = datas.getString("userid");
+                                String phoneNumber = datas.getString("phoneNumber");
+                                String name = datas.getString("name");
+                                String email = datas.getString("email");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MainActivity.handler2.sendEmptyMessage(0);
+                Log.i("error", "error");
+            }
+        });
+        queue.add(jsonObjectRequest);
+        return jsonObjectRequest;
+    }
 
 
     public void SetRequestQueue(final Request a,final int state) {

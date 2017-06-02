@@ -1,4 +1,4 @@
-package kr.ac.kpu.Eureka;
+package kr.ac.kpu.Eureka.Tab;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,9 @@ import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
+
+import kr.ac.kpu.Eureka.HomeFragment;
+import kr.ac.kpu.Eureka.R;
 
 public class TabbarActivity extends AppCompatActivity {
 

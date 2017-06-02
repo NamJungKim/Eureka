@@ -11,13 +11,16 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import kr.ac.kpu.Eureka.Data.ListViewItem;
+import kr.ac.kpu.Eureka.R;
+
 /**
  * Created by namjung on 2017. 5. 23..
  */
 
 public class ListViewAdapter extends BaseAdapter {
     private ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>() ;
-
+    String id;
     // ListViewAdapter의 생성자
     public ListViewAdapter() {
 
@@ -70,9 +73,10 @@ public class ListViewAdapter extends BaseAdapter {
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(Drawable icon, String title, String desc) {
+    public void addItem(Drawable icon, String title, String desc, String id) {
         ListViewItem item = new ListViewItem();
 
+        item._id = id;
         item.setIcon(icon);
         item.setTitle(title);
         item.setDesc(desc);

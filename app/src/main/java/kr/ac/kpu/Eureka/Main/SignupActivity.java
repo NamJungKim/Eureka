@@ -1,4 +1,4 @@
-package kr.ac.kpu.Eureka;
+package kr.ac.kpu.Eureka.Main;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import kr.ac.kpu.Eureka.Parser.JsonParser;
+import kr.ac.kpu.Eureka.R;
 
 /**
  * Created by namjung on 2017. 5. 23..
@@ -30,8 +33,6 @@ public class SignupActivity extends AppCompatActivity {
         phone = (EditText)findViewById(R.id.phone);
         okbtn = (Button)findViewById(R.id.ok);
         cancelbtn = (Button)findViewById(R.id.cancel);
-//final String userid, final String passwd, // 회원 정보 DB에 저장 , 회원가입
-        //  final String phoneNumber, final String name, final String email
 
         handler = new Handler(new Handler.Callback() {
             @Override

@@ -9,14 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import kr.ac.kpu.Eureka.Data.Global;
+import kr.ac.kpu.Eureka.Data.MyInfo;
+
 public class RoomFragment extends Fragment {
-    MyInfo myInfo;
+    MyInfo myInfo = Global.myinfo; // 전역변수받아옴
     View nextView;
 
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                                  @Nullable Bundle savedInstanceState) {
-            myInfo = new MyInfo();
             if(myInfo.getIsgroup()){ //방이 있으면 fragment_inroom 방으로 이동
                 nextView = inflater.inflate(R.layout.fragmnet_createroom, container, false);
                 return inflater.inflate(R.layout.frament_inroom,container,false);

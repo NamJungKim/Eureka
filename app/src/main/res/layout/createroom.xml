@@ -74,36 +74,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:textColor="#000000"
             android:text="출발 시간 : "
-            android:textSize="20dp"/>
+            android:textColor="#000000"
+            android:textSize="20dp" />
+
         <Spinner
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:entries="@array/date"
             android:layout_marginLeft="20dp"
-            android:textAlignment="center"/>
+            android:entries="@array/date"
+            android:textAlignment="center" />
+
         <Spinner
             android:id="@+id/hour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:entries="@array/hour"
-            android:textAlignment="center"/>
+            android:textAlignment="center" />
+
         <Spinner
             android:id="@+id/min"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:entries="@array/min"
             android:layout_marginRight="20dp"
-            android:textAlignment="center"/>
+            android:entries="@array/min"
+            android:textAlignment="textStart" />
+
     </LinearLayout>
 
-<LinearLayout
+    <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="20dp">

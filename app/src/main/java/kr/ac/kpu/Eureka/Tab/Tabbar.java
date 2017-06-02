@@ -1,8 +1,10 @@
-package kr.ac.kpu.Eureka;
+package kr.ac.kpu.Eureka.Tab;
 
 import android.content.Context;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
+
+import kr.ac.kpu.Eureka.R;
 
 public enum Tabbar {
 

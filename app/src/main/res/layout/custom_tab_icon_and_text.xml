@@ -14,7 +14,7 @@
     android:layout_centerInParent="true"
     />
 
-  <kr.ac.kpu.Eureka.TintableImageView
+  <kr.ac.kpu.Eureka.Tab.TintableImageView
     android:id="@+id/custom_tab_icon"
     android:layout_width="24dp"
     android:layout_height="24dp"

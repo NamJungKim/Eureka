@@ -1,4 +1,4 @@
-package kr.ac.kpu.Eureka;
+package kr.ac.kpu.Eureka.Main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import kr.ac.kpu.Eureka.Data.MyInfo;
+import kr.ac.kpu.Eureka.Parser.JsonParser;
+import kr.ac.kpu.Eureka.R;
+import kr.ac.kpu.Eureka.Tab.Tabbar;
 
 public class MainActivity extends AppCompatActivity{
     EditText id,password;
@@ -55,7 +60,6 @@ public class MainActivity extends AppCompatActivity{
                 abc = editText1.getText().toString();
                 String pass = editText2.getText().toString();
                 JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().getLogin(abc,pass),1);
-                // JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().CreateUser(uuids,names,1,25,"서울"),1);
                 break;
             case R.id.signup:
                 Intent intent = new Intent(this,SignupActivity.class);
@@ -69,13 +73,13 @@ public class MainActivity extends AppCompatActivity{
     protected void onStart() {
         super.onStart();
         MyInfo myInfo = new MyInfo();
-        MyGroup mgp = new MyGroup();
-        if (myInfo.getIsgroup() && mgp.getFlag() == 1){
-            mgp.setFlag(0);
+        editText1.setText("");
+        editText2.setText("");
+        if (myInfo.getIsgroup() && myInfo.getFlag() == 1){
+            myInfo.setFlag(0);
             Tabbar tabbar = Tabbar.values()[1];
             tabbar.startActivity(MainActivity.this);
         }
-        editText1.setText("");
-        editText2.setText("");
+
     }
 }

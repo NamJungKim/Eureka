@@ -1,4 +1,4 @@
-package kr.ac.kpu.Eureka;
+package kr.ac.kpu.Eureka.Tab;
 
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +24,13 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
 import java.util.Random;
+
+import kr.ac.kpu.Eureka.Data.Global;
+import kr.ac.kpu.Eureka.Data.MyInfo;
+import kr.ac.kpu.Eureka.HomeFragment;
+import kr.ac.kpu.Eureka.InRoom;
+import kr.ac.kpu.Eureka.R;
+import kr.ac.kpu.Eureka.RoomFragment;
 
 public class TabWithNotificationMarkActivity extends AppCompatActivity implements
     SmartTabLayout.TabProvider {
@@ -159,9 +166,8 @@ public class TabWithNotificationMarkActivity extends AppCompatActivity implement
   @Override
   protected void onStart() {
     super.onStart();
-    MyInfo myInfo = new MyInfo();
-    MyGroup mgp = new MyGroup();
-    if (myInfo.getIsgroup() && mgp.getFlag()==1) {
+    MyInfo myInfo = Global.myinfo;
+    if (myInfo.getIsgroup() && myInfo.getFlag()==1) {
       Intent intent = new Intent();
       setIntent(intent);
       finish();

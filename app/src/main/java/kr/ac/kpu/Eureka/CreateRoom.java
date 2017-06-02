@@ -8,12 +8,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.StringTokenizer;
+
+import kr.ac.kpu.Eureka.Data.Global;
+import kr.ac.kpu.Eureka.Parser.JsonParser;
 
 public class CreateRoom extends AppCompatActivity {
 
@@ -26,18 +34,10 @@ public class CreateRoom extends AppCompatActivity {
 
     EditText title;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.createroom);
-        /*getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //반투명 처리
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 0.9f;
-        //getWindow().setAttributes(lp);
-        //배경투명처리
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);*/
         final Spinner start = (Spinner)findViewById(R.id.start); //출발지
 
         Spinner end = (Spinner)findViewById(R.id.end); // 목적지
@@ -70,7 +70,9 @@ public class CreateRoom extends AppCompatActivity {
             public void onClick(View v) {
                 String stringTitle = title.getText().toString();
                 if (stringTitle.length() != 0) {
-                    MyInfo my = new MyInfo();
+                    Global.myinfo.setIsgroup();
+                    Global.myinfo.setFlag(1);
+                    /*MyInfo my = new MyInfo();
                     my.setIsgroup();
                     MyGroup mgp = new MyGroup();
                     mgp.setStart_area(startArea);
@@ -80,9 +82,25 @@ public class CreateRoom extends AppCompatActivity {
                     mgp.setMinTimte(minTime);
                     mgp.setPeopleCnt(peopleCnt);
                     mgp.setTitle(stringTitle);
-                    mgp.setFlag(1);
-                    /*Tabbar tabbar = Tabbar.values()[1];
-                    tabbar.startActivity(CreateRoom.this);*/
+                    mgp.setFlag(1);*/
+                    if(dateTime.equals("오후")) {
+                        int a = Integer.parseInt(hourTime) + 12;
+                        hourTime = String.valueOf(a);
+                        if(a > 23) return;
+                    }
+                    if(Integer.parseInt(hourTime) < 10){
+                        hourTime = "0" + hourTime;
+                    }
+                    //SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
+                    //format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    //Date date = format.parse("2013-08-11T19:13:20.000Z");
+                    String formatted = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                    StringTokenizer stz = new StringTokenizer(formatted," ");
+                    String dates =  stz.nextToken();
+                    dates = dates + " " + hourTime + ":" + minTime + ":" + "00" + ".00";
+                    Log.i(dates,dates);
+                    JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().CreateGroup(startArea,endArea,stringTitle,peopleCnt,dates),1);
+
                     Intent intent = new Intent();
                     setIntent(intent);
                     finish();
