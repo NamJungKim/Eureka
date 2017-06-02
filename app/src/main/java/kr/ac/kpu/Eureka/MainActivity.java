@@ -75,5 +75,7 @@ public class MainActivity extends AppCompatActivity{
             Tabbar tabbar = Tabbar.values()[1];
             tabbar.startActivity(MainActivity.this);
         }
+        editText1.setText("");
+        editText2.setText("");
     }
 }
