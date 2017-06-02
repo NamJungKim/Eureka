@@ -198,6 +198,46 @@ public class JsonParser { // 싱글톤 패턴 적용
         queue.add(jsonObjectRequest);
         return jsonObjectRequest;
     }
+    public void SetMyInfo(final String Userid) {
+        final String url = User_URL;
+        String Param = "?id="+Userid;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url+Param, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getString("result").equals("fail")) {
+                                MainActivity.handler2.sendEmptyMessage(0);
+                                return;
+                            }
+                        }catch (Exception es) { es.printStackTrace(); }
+                        try {
+                            JSONObject GroupList = response.getJSONObject("data");
+                            try {
+                                JSONObject data1 = GroupList;
+                                MyState = data1;
+                                MyInfo myInfo = new MyInfo();
+                                myInfo.set_id(data1.getString("_id"));
+                                myInfo.set_userid(data1.getString("userid"));
+                                myInfo.set_phone(data1.getString("phoneNumber"));
+                                myInfo.set_name(data1.getString("name"));
+                                myInfo.set_email(data1.getString("email"));
+                                //JSONArray group = data1.getJSONArray("group");
+                            } catch (Exception e) {
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MainActivity.handler2.sendEmptyMessage(0);
+                Log.i("error", "error");
+            }
+        });
+    }
+
 
     public void SetRequestQueue(final Request a,final int state) {
         final RequestQueue.RequestFinishedListener listener =

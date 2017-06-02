@@ -70,7 +70,12 @@ public class TabWithNotificationMarkActivity extends AppCompatActivity implement
         pages.add(FragmentPagerItem.of(getString(titleResId), HomeFragment.class));
         cnt++;
       }else if(cnt == 1){
-        pages.add(FragmentPagerItem.of(getString(titleResId), RoomFragment.class));
+          MyInfo myInfo = new MyInfo();
+          if(myInfo.getIsgroup()) {
+              pages.add(FragmentPagerItem.of(getString(titleResId), InRoom.class));
+          }else{
+              pages.add(FragmentPagerItem.of(getString(titleResId), RoomFragment.class));
+          }
         cnt++;
       }else if(cnt == 2){
         pages.add(FragmentPagerItem.of(getString(titleResId), RoomFragment.class));
@@ -149,5 +154,17 @@ public class TabWithNotificationMarkActivity extends AppCompatActivity implement
 
   private Tabbar getTabbar() {
     return Tabbar.valueOf(getIntent().getStringExtra(KEY_TABBAR));
+  }
+
+  @Override
+  protected void onStart() {
+    super.onStart();
+    MyInfo myInfo = new MyInfo();
+    MyGroup mgp = new MyGroup();
+    if (myInfo.getIsgroup() && mgp.getFlag()==1) {
+      Intent intent = new Intent();
+      setIntent(intent);
+      finish();
+    }
   }
 }

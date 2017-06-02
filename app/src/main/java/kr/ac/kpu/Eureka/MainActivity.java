@@ -43,8 +43,9 @@ public class MainActivity extends AppCompatActivity{
     public void onClick(View view){
         switch (view.getId()){
             case R.id.signin:
-                String abc = editText1.getText().toString();
-                JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().GetGroupInfoDetail(abc),1);
+                String user = editText1.getText().toString();
+                JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().GetGroupInfoDetail(user),1);
+
                 // JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().CreateUser(uuids,names,1,25,"서울"),1);
                 break;
             case R.id.signup:
@@ -52,6 +53,18 @@ public class MainActivity extends AppCompatActivity{
                 startActivityForResult(intent,0);
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        MyInfo myInfo = new MyInfo();
+        MyGroup mgp = new MyGroup();
+        if (myInfo.getIsgroup() && mgp.getFlag() == 1){
+            mgp.setFlag(0);
+            Tabbar tabbar = Tabbar.values()[1];
+            tabbar.startActivity(MainActivity.this);
         }
     }
 }

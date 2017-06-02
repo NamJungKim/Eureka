@@ -128,7 +128,7 @@
             android:text="취소"
             android:textSize="12pt"
             android:layout_margin="10pt"
-            android:id="@+id/cancel"/>
+            android:id="@+id/cancel" />
 
     </LinearLayout>
 </LinearLayout>
