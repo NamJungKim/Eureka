@@ -11,11 +11,12 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity{
     EditText id,password;
-    public static Handler handler;
+    public static Handler handler, login_handler;
     public static Handler handler2;
 
     EditText editText1 ;
     EditText editText2 ;
+    String abc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +24,14 @@ public class MainActivity extends AppCompatActivity{
         JsonParser.SetConetxt(this);
         editText1 = (EditText) findViewById(R.id.idEdit);
         editText2= (EditText) findViewById(R.id.passwordEdit);
+
+        login_handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().GetGroupInfoDetail(abc),1);
+                return false;
+            }
+        });
         handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -43,9 +52,9 @@ public class MainActivity extends AppCompatActivity{
     public void onClick(View view){
         switch (view.getId()){
             case R.id.signin:
-                String user = editText1.getText().toString();
-                JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().GetGroupInfoDetail(user),1);
-
+                abc = editText1.getText().toString();
+                String pass = editText2.getText().toString();
+                JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().getLogin(abc,pass),1);
                 // JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().CreateUser(uuids,names,1,25,"서울"),1);
                 break;
             case R.id.signup:

@@ -155,49 +155,7 @@ public class JsonParser { // 싱글톤 패턴 적용
         return postRequest;
     }
 
-    public JSONObject MyState = null;
-    public JsonObjectRequest GetGroupInfoDetail(final String Userid) {
-        final String url = User_URL;
-        String Param = "?id="+Userid;
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url+Param, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if (response.getString("result").equals("fail")) {
-                                MainActivity.handler2.sendEmptyMessage(0);
-                                return;
-                            }
-                        }catch (Exception es) { es.printStackTrace(); }
-                        try {
-                            JSONObject GroupList = response.getJSONObject("data");
-                            try {
-                                    JSONObject data1 = GroupList;
-                                    MyState = data1;
-                                    String _id = data1.getString("_id");
-                                    String userid = data1.getString("userid");
-                                    String phoneNumber = data1.getString("phoneNumber");
-                                    String name = data1.getString("name");
-                                    String email = data1.getString("email");
-                                    JSONArray group = data1.getJSONArray("group");
-                                    Log.i("한로그", _id +"님이 접속하였습니다.");
-                                    MainActivity.handler.sendEmptyMessage(0);
-                            } catch (Exception e) {
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                MainActivity.handler2.sendEmptyMessage(0);
-                Log.i("error", "error");
-            }
-        });
-        queue.add(jsonObjectRequest);
-        return jsonObjectRequest;
-    }
+
     public void SetMyInfo(final String Userid) {
         final String url = User_URL;
         String Param = "?id="+Userid;
@@ -237,6 +195,84 @@ public class JsonParser { // 싱글톤 패턴 적용
             }
         });
     }
+    public JsonObjectRequest getLogin(final String Userid,final String passwd) {
+        final String url = User_URL;
+        String Param = "?id="+Userid+"&passwd="+passwd;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url+Param, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getString("result").equals("fail")) {
+                                MainActivity.handler2.sendEmptyMessage(0);
+                                return;
+                            }
+                        }catch (Exception es) { es.printStackTrace(); }
+                        try {
+                            try {
+                                MainActivity.login_handler.sendEmptyMessage(0);
+                                return;
+                            } catch (Exception e) {
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MainActivity.handler2.sendEmptyMessage(0);
+                Log.i("error", "error");
+            }
+        });
+        queue.add(jsonObjectRequest);
+        return jsonObjectRequest;
+    }
+
+    public JSONObject MyState = null;
+    public JsonObjectRequest GetGroupInfoDetail(final String Userid) {
+        final String url = User_URL;
+        String Param = "?id="+Userid;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url+Param, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getString("result").equals("fail")) {
+                                MainActivity.handler2.sendEmptyMessage(0);
+                                return;
+                            }
+                        }catch (Exception es) { es.printStackTrace(); }
+                        try {
+                            JSONObject GroupList = response.getJSONObject("data");
+                            try {
+                                JSONObject data1 = GroupList;
+                                MyState = data1;
+                                String _id = data1.getString("_id");
+                                String userid = data1.getString("userid");
+                                String phoneNumber = data1.getString("phoneNumber");
+                                String name = data1.getString("name");
+                                String email = data1.getString("email");
+                                JSONArray group = data1.getJSONArray("group");
+                                Log.i("한로그", _id +"님이 접속하였습니다.");
+                                MainActivity.handler.sendEmptyMessage(0);
+                            } catch (Exception e) {
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MainActivity.handler2.sendEmptyMessage(0);
+                Log.i("error", "error");
+            }
+        });
+        queue.add(jsonObjectRequest);
+        return jsonObjectRequest;
+    }
+
 
 
     public void SetRequestQueue(final Request a,final int state) {
