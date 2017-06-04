@@ -30,7 +30,7 @@ public class MyGroup {
         this.PresentpeopleCnt = g;
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
-            format.setTimeZone(TimeZone.getTimeZone("UTC"));
+            format.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
             Date date = format.parse(e);
             if(date.getHours() > 12) {
                 this.dateTime = "오후";
