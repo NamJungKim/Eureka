@@ -15,15 +15,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import kr.ac.kpu.Eureka.Data.Global;
 import kr.ac.kpu.Eureka.Data.MyGroup;
 import kr.ac.kpu.Eureka.Data.MyInfo;
-import kr.ac.kpu.Eureka.HomeFragment;
+import kr.ac.kpu.Eureka.Home.HomeFragment;
 import kr.ac.kpu.Eureka.Main.MainActivity;
 import kr.ac.kpu.Eureka.Main.SignupActivity;
+import kr.ac.kpu.Eureka.Room.MeetingFragment;
+
+import static kr.ac.kpu.Eureka.Data.Global.room_myinfo;
 
 /**
  * Created by han on 2017-05-29.
@@ -111,6 +116,17 @@ public class JsonParser { // 싱글톤 패턴 적용
                             JSONObject getid = new JSONObject(response);
                             getid = getid.getJSONObject("data");
                             String _id = getid.getString("_id");
+
+                            String a = getid.getString("_id");
+                            String b = getid.getString("departure");
+                            String c =  getid.getString("destination");
+                            String d = getid.getString("name");
+                            String e = getid.getString("date");
+                            String f = getid.getString("maxCount");
+                            JSONArray g = getid.getJSONArray("member");
+                            MyGroup group_temp = new MyGroup(a,b,c,d,e,f,String.valueOf(g.length()));
+                            Global.myinfo.groups.add(group_temp);
+
                             JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().PutUser(Global.myinfo.get_userid(), _id), 1); // 계정 DB에도 그룹리스트 추가
                             Log.d("Response", response);
                         }catch (Exception e){e.printStackTrace();}
@@ -147,7 +163,8 @@ public class JsonParser { // 싱글톤 패턴 적용
                     @Override
                     public void onResponse(String response) {
                         // response
-                        HomeFragment.handler.sendEmptyMessage(0); // 프레그먼트 갱신
+                        JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().refresh_user(Global.myinfo.get_userid()), 1); // 참여룸 갱신
+                        JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().GetGroupUsers_Temp(), 1); // 메인 갱신
                         Log.d("Response", response);
                     }
                 },
@@ -286,8 +303,9 @@ public class JsonParser { // 싱글톤 패턴 적용
                                     MyGroup group_temp = new MyGroup(a,b,c,d,e,f,String.valueOf(g.length()));
                                     Global.myinfo.groups.add(group_temp);
                                 }
+                                JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().GetGroupUsers(), 1); // 계정 DB에도 그룹리스트 추가
                                 Log.i("한로그", _id +"님이 접속하였습니다.");
-                                MainActivity.handler.sendEmptyMessage(0);
+                                //MainActivity.handler.sendEmptyMessage(0);
                             } catch (Exception e) {
                             }
                         } catch (JSONException e) {
@@ -304,6 +322,7 @@ public class JsonParser { // 싱글톤 패턴 적용
         queue.add(jsonObjectRequest);
         return jsonObjectRequest;
     }
+
     public JsonObjectRequest GetGroupUsers(final String Userid) {
         final String url = gro_URL;
         String Param = "?id="+Userid;
@@ -312,6 +331,7 @@ public class JsonParser { // 싱글톤 패턴 적용
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            room_myinfo.clear();
                             JSONObject GroupList = response.getJSONObject("data");
                             String a = GroupList.getString("_id");
                             String b = GroupList.getString("departure");
@@ -325,7 +345,9 @@ public class JsonParser { // 싱글톤 패턴 적용
                                 String phoneNumber = datas.getString("phoneNumber");
                                 String name = datas.getString("name");
                                 String email = datas.getString("email");
+                                room_myinfo.add(new MyInfo(userid,name,email,phoneNumber));
                             }
+                            MeetingFragment.handler2_start.sendEmptyMessage(0);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -341,6 +363,185 @@ public class JsonParser { // 싱글톤 패턴 적용
         return jsonObjectRequest;
     }
 
+    public JsonObjectRequest GetGroupUsers() {
+        final String url = gro_URL;
+        String Param = "";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url+Param, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray GroupList = response.getJSONArray("data");
+                            for(int k=0;k<GroupList.length();k++) {
+                                String a = GroupList.getJSONObject(k).getString("_id");
+                                String b = GroupList.getJSONObject(k).getString("departure");
+                                String c =  GroupList.getJSONObject(k).getString("destination");
+                                String d = GroupList.getJSONObject(k).getString("name");
+                                String e = GroupList.getJSONObject(k).getString("date");
+                                String f = GroupList.getJSONObject(k).getString("maxCount");
+                                JSONArray g = GroupList.getJSONObject(k).getJSONArray("member");
+                                if(g.length() == 0){
+                                    remove(k,GroupList);
+                                }else {
+                                    MyGroup group_temp = new MyGroup(a, b, c, d, e, f, String.valueOf(g.length()));
+                                    Global.entireGroups.add(group_temp);
+                                }
+                            }
+                            MainActivity.handler.sendEmptyMessage(0);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MainActivity.handler2.sendEmptyMessage(0);
+                Log.i("error", "error");
+            }
+        });
+        queue.add(jsonObjectRequest);
+        return jsonObjectRequest;
+    }
+
+    public JsonObjectRequest GetGroupUsers_Temp() {
+        final String url = gro_URL;
+        String Param = "";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url+Param, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray GroupList = response.getJSONArray("data");
+                            Global.entireGroups = new ArrayList<>();
+                            for(int k=0;k<GroupList.length();k++) {
+                                String a = GroupList.getJSONObject(k).getString("_id");
+                                String b = GroupList.getJSONObject(k).getString("departure");
+                                String c =  GroupList.getJSONObject(k).getString("destination");
+                                String d = GroupList.getJSONObject(k).getString("name");
+                                String e = GroupList.getJSONObject(k).getString("date");
+                                String f = GroupList.getJSONObject(k).getString("maxCount");
+                                JSONArray g = GroupList.getJSONObject(k).getJSONArray("member");
+                                if(g.length() == 0){
+                                    remove(k,GroupList);
+                                }else {
+                                    MyGroup group_temp = new MyGroup(a, b, c, d, e, f, String.valueOf(g.length()));
+                                    Global.entireGroups.add(group_temp);
+                                }
+                            }
+                            HomeFragment.handler.sendEmptyMessage(0); // 프레그먼트 갱신
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("error", "error");
+            }
+        });
+        queue.add(jsonObjectRequest);
+        return jsonObjectRequest;
+    }
+    public static JSONArray remove(final int idx, final JSONArray from) {
+        final List<JSONObject> objs = asList(from);
+        objs.remove(idx);
+
+        final JSONArray ja = new JSONArray();
+        for (final JSONObject obj : objs) {
+            ja.put(obj);
+        }
+
+        return ja;
+    }
+
+    public static List<JSONObject> asList(final JSONArray ja) {
+        final int len = ja.length();
+        final ArrayList<JSONObject> result = new ArrayList<JSONObject>(len);
+        for (int i = 0; i < len; i++) {
+            final JSONObject obj = ja.optJSONObject(i);
+            if (obj != null) {
+                result.add(obj);
+            }
+        }
+        return result;
+    }
+
+    public JsonObjectRequest refresh_user(final String Userid) {
+        final String url = User_URL;
+        String Param = "?id="+Userid;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url+Param, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getString("result").equals("fail")) {
+                                return;
+                            }
+                        }catch (Exception es) { es.printStackTrace(); }
+                        Global.myinfo.groups.clear();
+                        try {
+                            JSONObject GroupList = response.getJSONObject("data");
+                                JSONObject data1 = GroupList;
+                                JSONArray group = data1.getJSONArray("group");
+                                for (int i =0 ; i<group.length();i++) {
+                                    String a = group.getJSONObject(i).getString("_id");
+                                    String b = group.getJSONObject(i).getString("departure");
+                                    String c =  group.getJSONObject(i).getString("destination");
+                                    String d = group.getJSONObject(i).getString("name");
+                                    String e = group.getJSONObject(i).getString("date");
+                                    String f = group.getJSONObject(i).getString("maxCount");
+                                    JSONArray g = group.getJSONObject(i).getJSONArray("member");
+                                    MyGroup group_temp = new MyGroup(a,b,c,d,e,f,String.valueOf(g.length()));
+                                    Global.myinfo.groups.add(group_temp);
+                                }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        MeetingFragment.handler.sendEmptyMessage(0); // 참여 룸 갱신
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("error", "error");
+            }
+        });
+        queue.add(jsonObjectRequest);
+        return jsonObjectRequest;
+    }
+
+
+
+    public StringRequest deleteRoom (final String id, final String roomid) { // 회원 리스트 DB에 저장
+        String url = "http://taxi.linears.xyz:3001/del1";
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().refresh_user(Global.myinfo.get_userid()), 1); // 참여룸 갱신
+                        JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().GetGroupUsers_Temp(), 1); // 메인 갱신
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Log.d("Error.Response", "1");
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("id", id);
+                params.put("roomid", roomid);
+                return params;
+            }
+        };
+        queue.add(postRequest);
+        return postRequest;
+    }
 
     public void SetRequestQueue(final Request a,final int state) {
         final RequestQueue.RequestFinishedListener listener =

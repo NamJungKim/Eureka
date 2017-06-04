@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar"
+        android:theme="@style/AppTheme"
         android:name="kr.ac.kpu.Eureka.Data.Global">
         <activity android:name=".Main.LoadingActivity">
             <intent-filter>
@@ -19,8 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main.MainActivity"/>
-        <activity android:name="kr.ac.kpu.Eureka.Tab.TabbarActivity"></activity>
+        <activity android:name=".Main.MainActivity"/>s
         <activity android:name="kr.ac.kpu.Eureka.Tab.TabWithNotificationMarkActivity">
         </activity>
         <activity android:name="kr.ac.kpu.Eureka.RoomDetailAcivity"
@@ -31,6 +30,10 @@
         </activity>
         <activity android:name=".CreateRoom"
             android:label="택시방 생성"/>
+        <activity android:name="kr.ac.kpu.Eureka.Inroom.inroom_activity"
+            android:theme="@style/Theme.AppCompat.Dialog"/>
+        <activity android:name=".Settings.ProfileActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
     </application>
 
 </manifest>

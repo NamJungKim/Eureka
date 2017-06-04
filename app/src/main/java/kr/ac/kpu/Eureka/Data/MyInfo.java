@@ -16,6 +16,15 @@ public class MyInfo {
     static int flag = 0;
     public ArrayList<MyGroup> groups = new ArrayList<>();
 
+    public MyInfo(){
+    }
+    public MyInfo(String a,String b,String c,String d){
+        this._userid = a;
+        this._name = b;
+        this._email = c;
+        this._phone = d;
+    }
+
     public void setIsgroup(){
         isgroup = !isgroup;
     }

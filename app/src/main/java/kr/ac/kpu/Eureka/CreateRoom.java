@@ -100,9 +100,6 @@ public class CreateRoom extends AppCompatActivity {
                     dates = dates + " " + hourTime + ":" + minTime + ":" + "00" + ".00";
                     Log.i(dates,dates);
                     JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().CreateGroup(startArea,endArea,stringTitle,peopleCnt,dates),1);
-
-                    Intent intent = new Intent();
-                    setIntent(intent);
                     finish();
                 }else{
                     Toast.makeText(getApplicationContext(),"제목이 비었습니다.",Toast.LENGTH_SHORT).show();

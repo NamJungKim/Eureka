@@ -1,6 +1,7 @@
 package kr.ac.kpu.Eureka;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import kr.ac.kpu.Eureka.Data.Global;
 import kr.ac.kpu.Eureka.Data.MyGroup;
+import kr.ac.kpu.Eureka.Home.HomeAdapter;
 import kr.ac.kpu.Eureka.Parser.JsonParser;
 
 /**
@@ -43,9 +45,9 @@ public class RoomDetailAcivity extends Activity{
         btn1 = (Button)findViewById(R.id.buttons);
 
         // 텍스트박스 갱신
-        for(int i = 0; i< Global.myinfo.groups.size(); i++) {
-            if(Global.myinfo.groups.get(i).getGroup_id().equals(HomeFragment.click_id)) {
-                MyGroup data = Global.myinfo.groups.get(i);
+        for(int i = 0; i< Global.entireGroups.size(); i++) {
+            if(Global.entireGroups.get(i).getGroup_id().equals(HomeAdapter.click_id)) {
+                MyGroup data = Global.entireGroups.get(i);
 
                 text1.setText("방 제목 : " + data.gettitle());
                 text2.setText("출발지 : " + data.getStart_area());
@@ -61,8 +63,21 @@ public class RoomDetailAcivity extends Activity{
             @Override
             public void onClick(View v) {
                 // 클릭 시 프레그먼트 전환할 것
-                JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().PutUser(Global.myinfo.get_userid(), String.valueOf(HomeFragment.click_id)), 1); // 디비에 추가
-                Toast.makeText(getApplicationContext(),"참가되었습니다.",Toast.LENGTH_SHORT).show();
+                for(int i = 0; i< Global.entireGroups.size(); i++) {
+                    if(Global.entireGroups.get(i).getGroup_id().equals(HomeAdapter.click_id)) {
+                        MyGroup data = Global.entireGroups.get(i);
+                        if (Integer.parseInt(data.getPeopleCnt()) > Integer.parseInt(data.getPresentpeopleCnt())){
+                            JsonParser.getInstance().SetRequestQueue(JsonParser.getInstance().PutUser(Global.myinfo.get_userid(), String.valueOf(HomeAdapter.click_id)), 1); // 디비에 추가
+                            Toast.makeText(getApplicationContext(),"참가되었습니다.",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getApplicationContext(),"방이 가득 찼습니다.",Toast.LENGTH_SHORT).show();
+                        }
+                        Intent intent = new Intent();
+                        setIntent(intent);
+                        finish();
+                    }
+                }
+
             }
         });
     }

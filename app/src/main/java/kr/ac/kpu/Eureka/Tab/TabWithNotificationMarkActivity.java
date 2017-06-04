@@ -7,6 +7,9 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
@@ -25,18 +29,27 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
 import java.util.Random;
 
+import kr.ac.kpu.Eureka.CreateRoom;
 import kr.ac.kpu.Eureka.Data.Global;
 import kr.ac.kpu.Eureka.Data.MyInfo;
-import kr.ac.kpu.Eureka.HomeFragment;
-import kr.ac.kpu.Eureka.InRoom;
+import kr.ac.kpu.Eureka.Home.HomeFragment;
+import kr.ac.kpu.Eureka.Parser.BackPressCloseHandler;
 import kr.ac.kpu.Eureka.R;
-import kr.ac.kpu.Eureka.RoomFragment;
+import kr.ac.kpu.Eureka.Room.MeetingFragment;
+import kr.ac.kpu.Eureka.Settings.SettingFragment;
 
 public class TabWithNotificationMarkActivity extends AppCompatActivity implements
     SmartTabLayout.TabProvider {
 
   private static final String KEY_TABBAR = "tabbar";
   int cnt=0;
+  public static Handler handler_dialog;
+
+  private BackPressCloseHandler back = new BackPressCloseHandler(this);
+  @Override
+  public void onBackPressed() {
+      back.onBackPressed();
+  }
 
   public static void startActivity(Context context, Tabbar tabbar) {
     Intent intent = new Intent(context, TabWithNotificationMarkActivity.class);
@@ -56,7 +69,7 @@ public class TabWithNotificationMarkActivity extends AppCompatActivity implement
     toolbar.setTitle(tabbar.titleResId);
     toolbar.setTitleTextColor(Color.BLACK);
 
-    final Drawable upArrow = getResources().getDrawable(R.drawable.back);
+    final Drawable upArrow = getResources().getDrawable(R.drawable.ic_action_backs);
     upArrow.setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
 
     setSupportActionBar(toolbar);
@@ -77,19 +90,23 @@ public class TabWithNotificationMarkActivity extends AppCompatActivity implement
         pages.add(FragmentPagerItem.of(getString(titleResId), HomeFragment.class));
         cnt++;
       }else if(cnt == 1){
-          MyInfo myInfo = new MyInfo();
-          if(myInfo.getIsgroup()) {
-              pages.add(FragmentPagerItem.of(getString(titleResId), InRoom.class));
-          }else{
-              pages.add(FragmentPagerItem.of(getString(titleResId), RoomFragment.class));
-          }
+             pages.add(FragmentPagerItem.of(getString(titleResId), MeetingFragment.class));
         cnt++;
       }else if(cnt == 2){
-        pages.add(FragmentPagerItem.of(getString(titleResId), RoomFragment.class));
+        Global.linearLayout = (LinearLayout)findViewById(R.id.header);
+        pages.add(FragmentPagerItem.of(getString(titleResId), SettingFragment.class));
         cnt++;
       }
     }
 
+    FloatingActionButton btn = (FloatingActionButton) findViewById(R.id.fab);
+    btn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(getApplicationContext(),CreateRoom.class);
+        startActivity(intent);
+      }
+    });
 
     FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
             getSupportFragmentManager(), pages);
@@ -108,13 +125,26 @@ public class TabWithNotificationMarkActivity extends AppCompatActivity implement
       }
     });
 
-    findViewById(R.id.test).setOnClickListener(new View.OnClickListener() {
+    handler_dialog = new Handler(new Handler.Callback() {
       @Override
-      public void onClick(View v) {
-        int position = Math.abs(random.nextInt()) % tabbar.tabs().length;
-        View tab = viewPagerTab.getTabAt(position);
-        View mark = tab.findViewById(R.id.custom_tab_notification_mark);
-        mark.setVisibility(View.VISIBLE);
+      public boolean handleMessage(Message msg) {
+        /*new MaterialDialog.Builder(TabWithNotificationMarkActivity.this)
+                .title("Taxi")
+                .content("방을 삭제하시겠습니까?")
+                .positiveText("확인")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                  @Override
+                  public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                  }
+                })
+                .negativeText("확인")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                  @Override
+                  public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                  }
+                })
+                .show();*/
+        return false;
       }
     });
 
@@ -157,6 +187,10 @@ public class TabWithNotificationMarkActivity extends AppCompatActivity implement
         return true;
     }
     return super.onOptionsItemSelected(item);
+  }
+
+  public static void setBackgroundColor(int color){
+    setBackgroundColor(color);
   }
 
   private Tabbar getTabbar() {

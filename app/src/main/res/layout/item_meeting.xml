@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/lay2"
+    android:layout_marginTop="10dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:background="@drawable/card_background"
+        android:layout_height="150dp"
+        android:layout_weight="7">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/ivMarket"
+            android:src="@drawable/taxi2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/card_background"
+        android:layout_weight="3"
+        android:paddingLeft="10dp">
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/exit"
+                android:layout_width="30dp"
+                android:layout_height="0dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="0dp"
+                android:text="X"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvMarket"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_weight="1"
+                android:freezesText="false"
+                android:gravity="center_vertical"
+                android:text="롯데리아 김포장기점"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:text="경기도 김포시 장기동 김포한강1로78번길"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvAdress"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:textColor="@color/black" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:text="3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvNumOfperson"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:textColor="@android:color/holo_green_dark" />
+
+            <TextView
+                android:text="명"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:textColor="@android:color/holo_green_dark" />
+
+            <TextView
+                android:text="(인천 풍무동, 서울시 중랑구, 고양시 일산) "
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvAreaOfperson"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textSize="12sp"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/cyan_500" />
+        </LinearLayout>
+
+        <TextView
+            android:text="2017. 2. 5."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvDate"
+            android:layout_weight="1"
+            android:textStyle="normal|bold|italic"
+            android:textColor="@color/green_500" />
+
+    </LinearLayout>
+
+</LinearLayout>

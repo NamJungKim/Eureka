@@ -46,7 +46,6 @@ public enum Tabbar {
   }
 
   public void startActivity(Context context) {
-    TabbarActivity.startActivity(context, this);//context는 mainactivity, this는 Demo의 Basic
   }
 
   public void setup(final SmartTabLayout layout) {

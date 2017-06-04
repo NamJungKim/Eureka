@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="14pt"
+        android:text="회원 정보"
+        android:layout_marginBottom="5pt"
+        android:layout_marginTop="20pt"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10pt">
+        <TextView
+            android:layout_width="50pt"
+            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:text="아이디 : "
+            android:textSize="9pt"
+            android:layout_marginLeft="10pt" />
+        <TextView
+            android:maxLength="15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:layout_marginLeft="10pt"
+            android:textSize="9pt"
+            android:id="@+id/id"/>
+    </LinearLayout>
+    <!--************************************************************************-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10pt">
+        <TextView
+            android:layout_width="50pt"
+            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:text="비밀번호 : "
+            android:textSize="9pt"
+            android:layout_marginLeft="10pt"/>
+        <TextView
+            android:maxLength="12"
+            android:text="**********"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:layout_marginLeft="10pt"
+            android:textSize="9pt"
+            android:id="@+id/password"/>
+    </LinearLayout>
+    <!--************************************************************************-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10pt">
+        <TextView
+            android:layout_width="50pt"
+            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:text="이름 : "
+            android:textSize="9pt"
+            android:layout_marginLeft="10pt"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:layout_marginLeft="10pt"
+            android:textSize="9pt"
+            android:id="@+id/name"/>
+    </LinearLayout>
+    <!--************************************************************************-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10pt">
+        <TextView
+            android:layout_width="50pt"
+            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:text="전화번호 : "
+            android:textSize="9pt"
+            android:layout_marginLeft="10pt"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:layout_marginLeft="10pt"
+            android:textSize="9pt"
+            android:id="@+id/phone"/>
+    </LinearLayout>
+    <!--************************************************************************-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10pt">
+        <TextView
+            android:layout_width="50pt"
+            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:text="학교이메일 : "
+            android:textSize="9pt"
+            android:layout_marginLeft="10pt"/>
+        <TextView
+            android:inputType="textWebEmailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:layout_marginLeft="10pt"
+            android:textSize="9pt"
+            android:id="@+id/email"/>
+    </LinearLayout>
+    <!--************************************************************************-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10pt">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="회원정보 변경"
+            android:textSize="12pt"
+            android:layout_margin="10pt"
+            android:id="@+id/edit"
+            android:background="@drawable/button"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

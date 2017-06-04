@@ -73,8 +73,8 @@ public class MainActivity extends AppCompatActivity{
     protected void onStart() {
         super.onStart();
         MyInfo myInfo = new MyInfo();
-        editText1.setText("");
-        editText2.setText("");
+       // editText1.setText("");
+       // editText2.setText("");
         if (myInfo.getIsgroup() && myInfo.getFlag() == 1){
             myInfo.setFlag(0);
             Tabbar tabbar = Tabbar.values()[1];
